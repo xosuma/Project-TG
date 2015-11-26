@@ -39,7 +39,7 @@ app.use('/schedules', schedules);
 app.get('/', function(req,res){
   res.sendFile('index.html');
 });
-*/
+
 
 app.post('/login',function(req,res){
   var name = req.body.user;
@@ -55,7 +55,7 @@ app.post('/login',function(req,res){
   console.log("cookie created successfully");
   res.send("check cookie");
 });
-
+*/
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
