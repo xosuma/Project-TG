@@ -5,9 +5,6 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
-var routes = require('./routes/index');
-var users = require('./routes/users');
-
 var app = express();
 
 // view engine setup
@@ -26,6 +23,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 //route here
 app.get('/', function(req,res){
   res.sendFile('index.html');
+});
+
+app.post('/login',function(req,res){
+  var name = req.body.user;
+  var email = req.body.email;
+  //check database
+  //return cookie
+  res.cookie("user",name,{maxAge:900000});
+  res.cookie("email",email,{maxAge:900000});
+  res.cookie("loggedIn",'true',{maxAge:900000});
+  //여기에다가 데이터베이스 체크해서 새유저면 boolean값을보내서 주소를 쳐쓰게합시다
+  //
+  //res.cookie("isNew",boolean,{maxAge:900000});
+  console.log("cookie created successfully");
+  res.send("check cookie");
 });
 
 
