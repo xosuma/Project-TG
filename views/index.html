@@ -8,8 +8,7 @@
 		<div id="man" ng-controller="loginController">
 			<div ng-show="isLoggedIn()">
 				<!--button ng-click="signOut()" type="submit">Sign out</button-->
-				<!--여기다가 새주소체크해서 어쩌고하고 아니면 캘린더하세요-->
-
+    			<div ng-view></div>
 			</div>
 
 			<div id="signin" ng-hide="isLoggedIn()"></div>
@@ -39,8 +38,11 @@
           	}
 		 </script>
 		
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
-		<script src="https:/ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-cookies.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-route.min.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-resource.min.js"></script>
+    	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-cookies.min.js"></script>
+
 		<script src="https://apis.google.com/js/platform.js" async defer></script>
 		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
 		<script src="javascripts/handler.js"></script>
