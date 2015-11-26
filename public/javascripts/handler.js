@@ -51,10 +51,11 @@
           });
         }]);
 
-    app.controller('ScheduleController', ['$scope', 'Schedules', function ($scope, Schedules) {
+    app.controller('ScheduleController', ['$scope', 'Schedules','$cookies', function ($scope, Schedules,$cookies) {
           $scope.editing = [];
           $scope.schedules = Schedules.query();
-
+          var user = $cookies.get('user');
+          var email = $cookies.get('email');
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
             var schedule = new Schedules({ name: $scope.newSchedule, completed: false });

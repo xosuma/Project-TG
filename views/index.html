@@ -19,7 +19,6 @@
                 console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
                 console.log('Name: ' + profile.getName());
                 console.log('Email: ' + profile.getEmail());
-                console.log("DFD");
                 angular.element(document.getElementById("man")).scope().callfun(profile.getName(),profile.getEmail());
             }
             function onFailure(error) {
