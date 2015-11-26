@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html ng-app="app">
+  <head>
+    <title><%= title %></title>
+    		<meta name="google-signin-client_id" content="1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+  </head>
+  <body>
+    <h1><%= title %></h1>
+
+    <ng-view></ng-view>
+
+    <!-- Libraries -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-route.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.25/angular-resource.min.js"></script>
+    <script src="javascripts/handler.js"></script>
+
+    <!-- Template -->
+    <script type="text/ng-template" id="/schedules.html">
+      Search: <input type="text" ng-model="search.name">
+      <ul>
+        <li ng-repeat="schedule in schedules | filter: search">
+          <input type="checkbox" ng-model="schedule.completed" ng-change="update($index)">
+          <a ng-show="!editing[$index]" href="#/{{schedule._id}}">{{schedule.name}}</a>
+          <button ng-show="!editing[$index]" ng-click="edit($index)">edit</button>
+          <button ng-show="!editing[$index]" ng-click="remove($index)">remove</button>
+
+          <input ng-show="editing[$index]" type="text" ng-model="schedule.name">
+          <button ng-show="editing[$index]" ng-click="update($index)">update</button>
+          <button ng-show="editing[$index]" ng-click="cancel($index)">cancel</button>
+        </li>
+      </ul>
+      New task <input type="text" ng-model="newSchedule"><button ng-click="save()">Create</button>
+    </script>
+
+    <script type="text/ng-template" id="/scheduleDetails.html">
+      <h1>{{ schedule.name }}</h1>
+      completed: <input type="checkbox" ng-model="schedule.completed"><br>
+      note: <textarea ng-model="schedule.note"></textarea><br><br>
+
+      <button ng-click="update()">update</button>
+      <button ng-click="remove()">remove</button>
+      <a href="/">Cancel</a>
+    </script>
+
+    <script>
+      angular.module('app', ['ngRoute', 'ngResource'])
+
+        //---------------
+        // Services
+        //---------------
+
+        .factory('Schedules', ['$resource', function($resource){
+          return $resource('/schedules/:id', null, {
+            'update': { method:'PUT' }
+          });
+        }])
+
+        //---------------
+        // Controllers
+        //---------------
+
+        .controller('ScheduleController', ['$scope', 'Schedules', function ($scope, Schedules) {
+          $scope.editing = [];
+          $scope.schedules = Schedules.query();
+
+          $scope.save = function(){
+            if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
+            var schedule = new Schedules({ name: $scope.newSchedule, completed: false });
+
+            schedule.$save(function(){
+              $scope.schedules.push(schedule);
+              $scope.newSchedule = ''; // clear textbox
+            });
+          }
+
+          $scope.update = function(index){
+            var schedule = $scope.schedules[index];
+            Schedules.update({id: schedule._id}, schedule);
+            $scope.editing[index] = false;
+          }
+
+          $scope.edit = function(index){
+            $scope.editing[index] = angular.copy($scope.schedules[index]);
+          }
+
+          $scope.cancel = function(index){
+            $scope.schedules[index] = angular.copy($scope.editing[index]);
+            $scope.editing[index] = false;
+          }
+
+          $scope.remove = function(index){
+            var schedule = $scope.schedules[index];
+            Schedules.remove({id: schedule._id}, function(){
+              $scope.schedules.splice(index, 1);
+            });
+          }
+        }])
+
+        .controller('ScheduleDetailCtrl', ['$scope', '$routeParams', 'Schedules', '$location', function ($scope, $routeParams, Schedules, $location) {
+          $scope.schedule = Schedules.get({id: $routeParams.id });
+
+          $scope.update = function(){
+            Schedules.update({id: $scope.schedule._id}, $scope.schedule, function(){
+              $location.url('/');
+            });
+          }
+
+          $scope.remove = function(){
+            Schedules.remove({id: $scope.schedule._id}, function(){
+              $location.url('/');
+            });
+          }
+        }])
+
+        //---------------
+        // Routes
+        //---------------
+
+        .config(['$routeProvider', function ($routeProvider) {
+          $routeProvider
+            .when('/', {
+              templateUrl: '/schedules.html',
+              controller: 'ScheduleController'
+            })
+
+            .when('/:id', {
+              templateUrl: '/scheduleDetails.html',
+              controller: 'ScheduleDetailCtrl'
+           });
+        }]);
+    </script>
+  </body>
+</html>

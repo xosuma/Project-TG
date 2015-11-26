@@ -3,7 +3,8 @@ var router = express.Router();
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.sendFile('index.html');
+   res.render('index.html', { title: 'ngTodo App' });
+  //res.sendFile('index.html');
 });
 
 module.exports = router;
