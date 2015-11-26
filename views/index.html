@@ -7,19 +7,20 @@
 
 		<div id="man" ng-controller="loginController">
 			<div ng-show="isLoggedIn()">
-				<!--button ng-click="signOut()" type="submit">Sign out</button-->
+				<button ng-click="signOut()" type="submit">Sign out</button>
     			<div ng-view></div>
 			</div>
-
 			<div id="signin" ng-hide="isLoggedIn()"></div>
 		</div>
 		<script>
             function onSuccess(googleUser) {
-            	var profile = googleUser.getBasicProfile();
-				console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
-				console.log('Name: ' + profile.getName());
-				console.log('Email: ' + profile.getEmail());
-				angular.element(document.getElementById("man")).scope().callfun(profile.getName(),profile.getEmail());
+
+                var profile = googleUser.getBasicProfile();
+                console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+                console.log('Name: ' + profile.getName());
+                console.log('Email: ' + profile.getEmail());
+                console.log("DFD");
+                angular.element(document.getElementById("man")).scope().callfun(profile.getName(),profile.getEmail());
             }
             function onFailure(error) {
               console.log(error);
@@ -28,7 +29,7 @@
             function renderButton() {
               gapi.signin2.render('signin', {
                 'scope': 'https://www.googleapis.com/auth/plus.login',
-                'width': 200,
+                'width': 300,
                 'height': 50,
                 'longtitle': true,
                 'theme': 'dark',

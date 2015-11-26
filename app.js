@@ -58,6 +58,16 @@ app.post('/login',function(req,res){
   res.send("check cookie");
 });
 
+app.post('/logout',function(req,res){
+  console.log(req.cookies);
+  console.log(res.clearCookie('user'));
+  console.log(res.clearCookie('email'));
+  console.log(res.clearCookie('loggedIn'));
+  console.log("cookie deleted successfully");
+  res.send("cookie deleted");
+});
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
