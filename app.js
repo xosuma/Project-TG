@@ -7,6 +7,7 @@ var bodyParser = require('body-parser');
 
 //var routes = require('./routes/index');
 var schedules = require('./routes/schedules');
+var users = require('./routes/users');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/scheduleApp', function(err) {
@@ -36,6 +37,7 @@ app.use(express.static(path.join(__dirname, 'views')));
 //route here
 //app.use('/', routes);
 app.use('/schedules', schedules);
+app.use('/users', users);
 
 app.get('/', function(req,res){
   res.sendFile('index.html');

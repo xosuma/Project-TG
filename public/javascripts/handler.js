@@ -69,12 +69,19 @@
             'update': { method:'PUT' }
           });
         }]);
+        
+    app.factory('Users', ['$resource', function($resource){
+          return $resource('/users/:id', null, {
+            'update': { method:'PUT' }
+          });
+        }]);
 
-    app.controller('ScheduleController', ['$scope', 'Schedules','$cookies', function ($scope, Schedules,$cookies) {
+    app.controller('ScheduleController', ['$scope', 'Schedules', '$cookies', function ($scope, Schedules, $cookies) {
           $scope.editing = [];
           $scope.schedules = Schedules.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
+          
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
             var schedule = new Schedules({ name: $scope.newSchedule, completed: false });
@@ -104,6 +111,23 @@
             var schedule = $scope.schedules[index];
             Schedules.remove({id: schedule._id}, function(){
               $scope.schedules.splice(index, 1);
+            });
+          }
+        }]);
+        
+    app.controller('UserController', ['$scope', 'Users', '$cookies', function ($scope, Users, $cookies) {
+          $scope.editing = [];
+          $scope.users = Users.query();
+          $scope.user = $cookies.get('user');
+          $scope.emails = $cookies.get('email');
+          
+          $scope.save = function(){
+            if(!$scope.newUser || $scope.newUser.length < 1) return;
+            var user = new Users({ name: $scope.newUser});
+
+            user.$save(function(){
+              $scope.users.push(user);
+              $scope.newUser = ''; // clear textbox
             });
           }
         }]);

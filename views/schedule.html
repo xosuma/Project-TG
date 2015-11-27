@@ -14,4 +14,15 @@
         </li>
       </ul>
       New Schedules <input type="text" ng-model="newSchedule"><button ng-click="save()">Create</button>
+     
+</div>
+
+<div ng-controller="UserController">
+    {{user}} / {{emails}}<br />
+  <ul>
+        <li ng-repeat="user in users">
+          {{user.name}}
+        </li>
+      </ul>
+  New Address <input type="text" ng-model="newUser"><button ng-click="save()">Add</button>
 </div>
