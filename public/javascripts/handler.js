@@ -108,21 +108,4 @@
           }
         }]);
 
-    app.controller('ScheduleDetailCtrl', ['$scope', '$routeParams', 'Schedules', '$location', function ($scope, $routeParams, Schedules, $location) {
-          $scope.schedule = Schedules.get({id: $routeParams.id });
-
-          $scope.update = function(){
-            Schedules.update({id: $scope.schedule._id}, $scope.schedule, function(){
-              $location.url('/');
-            });
-          }
-
-          $scope.remove = function(){
-            Schedules.remove({id: $scope.schedule._id}, function(){
-              $location.url('/');
-            });
-          }
-        }]);
-
-
 })();
