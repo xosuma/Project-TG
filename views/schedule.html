@@ -1,4 +1,5 @@
 <div ng-controller="ScheduleController">
+  {{user}} / {{emails}}<br />
     Search: <input type="text" ng-model="search.name">
       <ul>
         <li ng-repeat="schedule in schedules | filter: search">
@@ -15,7 +16,7 @@
       New task <input type="text" ng-model="newSchedule"><button ng-click="save()">Create</button>
 </div>
 
-<div>
+<!--div>
   <h1>{{ schedule.name }}</h1>
   completed: <input type="checkbox" ng-model="schedule.completed"><br>
   note: <textarea ng-model="schedule.note"></textarea><br><br>
@@ -23,4 +24,4 @@
   <button ng-click="update()">update</button>
   <button ng-click="remove()">remove</button>
   <a href="/">Cancel</a>
-</div>
+</div-->

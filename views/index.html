@@ -2,18 +2,24 @@
 <html>
 	<head>
 		<meta name="google-signin-client_id" content="1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com">
-	</head>
+	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+
+    </head>
 	<body ng-app="tool">  
 
 		<div id="man" ng-controller="loginController">
+
 			<div ng-show="isLoggedIn()">
 				<button ng-click="signOut()" type="submit">Sign out</button>
     			<div ng-view></div>
 			</div>
-			<div id="signin" ng-hide="isLoggedIn()"></div>
+            <div ng-hide="isLoggedIn()">
+                <i class="fa fa-google-plus"><a href="
+    http://accounts.google.com/o/oauth2/auth?client_id=1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&immediate=false&response_type=token&redirect_uri=http://localhost:3000">Sign in</a></i>
+            </div>
 		</div>
 		<script>
-            function onSuccess(googleUser) {
+           /* function onSuccess(googleUser) {
 
                 var profile = googleUser.getBasicProfile();
                 console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
@@ -35,7 +41,7 @@
                 'onsuccess': onSuccess,
                 'onfailure': onFailure
               });
-          	}
+          	}*/
 		 </script>
 		
     	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular.min.js"></script>
@@ -43,8 +49,8 @@
     	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-resource.min.js"></script>
     	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.5/angular-cookies.min.js"></script>
 
-		<script src="https://apis.google.com/js/platform.js" async defer></script>
-		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script>
+		<!--script src="https://apis.google.com/js/platform.js" async defer></script>
+		<script src="https://apis.google.com/js/platform.js?onload=renderButton" async defer></script-->
 		<script src="javascripts/handler.js"></script>
 	</body>
 </html>
