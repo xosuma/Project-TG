@@ -1,5 +1,5 @@
 <div ng-controller="ScheduleController">
-  {{user}} / {{emails}}<br />
+  {{user}}<br>
       <ul>
         <li ng-repeat="schedule in schedules">
           {{schedule.name}}
@@ -14,6 +14,5 @@
         </li>
       </ul>
       New Schedules <input type="text" ng-model="newSchedule"><button ng-click="save()">Create</button>
-     
 </div>
 
