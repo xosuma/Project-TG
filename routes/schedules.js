@@ -12,6 +12,16 @@ router.get('/', function(req, res, next) {
   });
 });
 
+
+/* GET /schedules listing. */
+router.get('/:id', function(req, res, next) {
+  Schedule.find(function (err, schedules) {
+    if (err) return next(err);
+    res.json(schedules);
+  });
+});
+
+
 /* POST /schedules */
 router.post('/', function(req, res, next) {
   Schedule.create(req.body, function (err, post) {

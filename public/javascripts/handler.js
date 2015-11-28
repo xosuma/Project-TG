@@ -2,13 +2,10 @@
     var app = angular.module('tool', ['ngCookies','ngRoute','ngResource']);
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider
-            .when('/schedule.html', {
+            .when('/', {
             templateUrl: '/schedule.html',
             controller: 'ScheduleController'
-        }).when('/', {
-            templateUrl: '/schedule.html',
-            controller: 'loginController'
-        })
+        }).otherwise({redirectTo: '/'})
     }])
 
     app.controller('loginController',['$scope','$http','$cookies','$rootScope',function($scope,$http,$cookies,$rootScope){
@@ -20,14 +17,13 @@
           var url = "https://www.googleapis.com/plus/v1/people/me?access_token="+d;
           $http({ method: 'GET', url:url})
             .success(function (data, status, header, config) {
-              console.log(data);
+              //console.log(data);
               var name = data["name"]["givenName"]+" "+data["name"]["familyName"];
               var email = data["emails"][0]["value"];
             $http({ method: 'POST', url: '/login', data: {user: name,email: email}})
             .success(function (data, status, header, config) {
-              console.log($cookies.getAll());
-              //change this shit
-              window.location.href="http://localhost:3000/";
+              //console.log($cookies.getAll());
+              window.location.reload();
             })
             .error(function () {
                 alert("Server is down, try again later");
@@ -115,11 +111,24 @@
           }
         }]);
    
-    app.controller('UserController', ['$scope', 'Users', '$cookies', function ($scope, Users, $cookies) {
+    app.controller('UserController', ['$scope', 'Users', '$cookies','$http',function ($scope, Users, $cookies,$http) {
           $scope.editing = [];
           $scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
+          //var query = {name:'dfdf'}
+          $http({ method: 'GET', url: '/Users/findID'})
+            .success(function (data, status, header, config) {
+              if (data==[]){
+                //새유저 묻기
+              }
+              else {
+                //그냥하기
+              }
+            })
+            .error(function () {
+                alert("Server is down, try again later");
+            })
           $scope.save = function(){
             if(!$scope.newUser || $scope.newUser.length < 1) return;
             var user = new Users({ name: $scope.newUser});

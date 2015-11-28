@@ -12,6 +12,20 @@ router.get('/', function(req, res, next) {
   });
 });
 
+router.get('/findID', function(req, res, next) {
+
+  /*var k = req.body.email;
+  console.log(k);
+  var e = req.body.email.split("=");
+  e = e[1];
+  console.log(e);*/
+  console.log(req.cookies["user"]);
+  User.find({name: req.cookies["user"]}, function (err, users) {
+    if (err) return next(err);
+    res.json(users);
+  });
+});
+
 /* POST /users */
 router.post('/', function(req, res, next) {
   User.create(req.body, function (err, post) {
