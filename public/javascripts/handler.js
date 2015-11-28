@@ -1,7 +1,11 @@
 (function () {
     var app = angular.module('tool', ['ngCookies','ngRoute','ngResource']);
     app.config(['$routeProvider', function ($routeProvider) {
-        $routeProvider
+        $routeProvider 
+          .when('/register', {
+            templateUrl: '/register.html',
+            controller: 'UserController'
+          })
             .when('/', {
             templateUrl: '/schedule.html',
             controller: 'ScheduleController'
@@ -23,7 +27,22 @@
             $http({ method: 'POST', url: '/login', data: {user: name,email: email}})
             .success(function (data, status, header, config) {
               //console.log($cookies.getAll());
-              window.location.reload();
+              $http({ method: 'GET', url: '/Users/findID'})
+                .success(function (data, status, header, config) {
+                 if (data.length>0){
+                  window.location.reload();
+                 }
+                 else {
+                  window.location.href="/#/register";
+                 }
+                
+                })
+                .error(function () {
+                    alert("Server is down, try again later");
+                })
+
+
+
             })
             .error(function () {
                 alert("Server is down, try again later");
@@ -117,18 +136,7 @@
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
           //var query = {name:'dfdf'}
-          $http({ method: 'GET', url: '/Users/findID'})
-            .success(function (data, status, header, config) {
-              if (data==[]){
-                //새유저 묻기
-              }
-              else {
-                //그냥하기
-              }
-            })
-            .error(function () {
-                alert("Server is down, try again later");
-            })
+
           $scope.save = function(){
             if(!$scope.newUser || $scope.newUser.length < 1) return;
             var user = new Users({ name: $scope.newUser});
@@ -138,6 +146,7 @@
               $scope.users.push(user);
               $scope.newUser = ''; // clear textbox
             });
+            window.location.href="/";
           }
         }]);
 

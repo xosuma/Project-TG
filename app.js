@@ -58,10 +58,9 @@ app.post('/login',function(req,res){
 });
 
 app.post('/logout',function(req,res){
-  console.log(req.cookies);
-  console.log(res.clearCookie('user'));
-  console.log(res.clearCookie('email'));
-  console.log(res.clearCookie('loggedIn'));
+  res.clearCookie('user');
+  res.clearCookie('email');
+  res.clearCookie('loggedIn');
   console.log("cookie deleted successfully");
   res.send("cookie deleted");
 });
