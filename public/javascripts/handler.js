@@ -139,14 +139,27 @@
 
           $scope.save = function(){
             if(!$scope.newUser || $scope.newUser.length < 1) return;
-            var user = new Users({ name: $scope.user, email: $scope.emails, address: $scope.newUser, admin: false});
+            //GEOCODE
+            var api = "AIzaSyA-G6dLv9YHY-_HE7W87Dw-IjdE17mb3pQ";
+            var url= "https://maps.googleapis.com/maps/api/geocode/json?address="+$scope.newUser+"&key="+api;
+            $http({ method: 'GET', url: url})
+                .success(function (data, status, header, config) {
+                  var lat = data["results"][0]["geometry"]["location"]["lat"];
+                  var lng = data["results"][0]["geometry"]["location"]["lng"];
+                  var user = new Users({ name: $scope.user, email: $scope.emails, address: $scope.newUser, admin: false, lat: lat,lng: lng});
+                  user.$save(function(){
+                    $scope.users.push(user);
+                    $scope.newUser = ''; // clear textbox
+                  });
 
+                  window.location.href="/";
+                })
+                .error(function () {
+                    alert("Server is down, try again later");
 
-            user.$save(function(){
-              $scope.users.push(user);
-              $scope.newUser = ''; // clear textbox
-            });
-            window.location.href="/";
+                    window.location.href="/";
+                })
+            
           }
         }]);
 
