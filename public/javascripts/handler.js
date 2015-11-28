@@ -99,7 +99,7 @@
           $scope.emails = $cookies.get('email');
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
-            var schedule = new Schedules({ name: $scope.newSchedule, completed: false });
+            var schedule = new Schedules({ name: $scope.newSchedule, join: [] });
 
             schedule.$save(function(){
               $scope.schedules.push(schedule);
@@ -128,6 +128,15 @@
               $scope.schedules.splice(index, 1);
             });
           }
+          
+          $scope.join = function(index){
+              var schedule = $scope.schedules[index];
+              Schedules.update({id: schedule._id}, function(){
+                  
+              });
+              
+          }
+          
         }]);
    
    
