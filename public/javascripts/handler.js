@@ -139,7 +139,7 @@
 
           $scope.save = function(){
             if(!$scope.newUser || $scope.newUser.length < 1) return;
-            var user = new Users({ name: $scope.user, email:$scope.emails, address: $scope.newUser});
+            var user = new Users({ name: $scope.user, email: $scope.emails, address: $scope.newUser, admin: false});
 
 
             user.$save(function(){
