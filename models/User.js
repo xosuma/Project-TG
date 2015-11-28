@@ -6,7 +6,8 @@ var UserSchema = new mongoose.Schema({
   address: String,
   lat: Number,
   lng: Number,
-  admin: Boolean
+  admin: Boolean,
+  attend:[String]
 })
 
 module.exports = mongoose.model('User', UserSchema);

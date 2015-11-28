@@ -93,10 +93,14 @@
         
     app.controller('ScheduleController', ['$scope', 'Schedules', 'Users', '$cookies', function ($scope, Schedules, Users, $cookies) {
           $scope.editing = [];
+          $scope.attending = [];
           $scope.schedules = Schedules.query();
           $scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
+          $scope.address = '';
+          $scope.attend = false;
+         
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
             var schedule = new Schedules({ name: $scope.newSchedule, join: [] });
@@ -106,7 +110,7 @@
               $scope.newSchedule = ''; // clear textbox
             });
           }
-
+          
           $scope.update = function(index){
             var schedule = $scope.schedules[index];
             Schedules.update({id: schedule._id}, schedule);
@@ -131,10 +135,21 @@
           
           $scope.join = function(index){
               var schedule = $scope.schedules[index];
-              Schedules.update({id: schedule._id}, function(){
-                  
-              });
-              
+              var user = $scope.users;
+              var indexLength = $scope.users.length;
+              for (var i = 0; i < indexLength; i++)
+              {
+                  if(user[i].name = $scope.user){
+                       $scope.address = user[i].address;
+                  } 
+              }
+              schedule.join.push({user:$scope.user,email:$scope.emails,address:$scope.address});
+              Schedules.update({id: schedule._id}, schedule);
+              $scope.attending[index] = true;
+          }
+          
+          $scope.reset = function(index){
+              $scope.attending[index] = false;
           }
           
         }]);

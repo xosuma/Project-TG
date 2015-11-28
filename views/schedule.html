@@ -3,8 +3,8 @@
       <ul>
         <li ng-repeat="schedule in schedules">
           {{schedule.name}}
-          <button ng-show="!editing[$index]" ng-click="">Join</button>
-          <button ng-show="!editing[$index]" ng-click="">Reset</button>
+          <button ng-show="!attending[$index]" ng-click="join($index)">Join</button>
+          <button ng-show="attending[$index]" ng-click="reset($index)">Reset</button>
           <button ng-show="!editing[$index]" ng-click="edit($index)">edit</button>
           <button ng-show="!editing[$index]" ng-click="remove($index)">remove</button>
 
