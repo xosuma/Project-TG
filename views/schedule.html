@@ -1,10 +1,10 @@
 <div ng-controller="ScheduleController">
   {{user}} / {{emails}}<br />
-    Search: <input type="text" ng-model="search.name">
       <ul>
-        <li ng-repeat="schedule in schedules | filter: search">
-          <input type="checkbox" ng-model="schedule.completed" ng-change="update($index)">
+        <li ng-repeat="schedule in schedules">
           {{schedule.name}}
+          <button ng-show="!editing[$index]" ng-click="">Join</button>
+          <button ng-show="!editing[$index]" ng-click="">Reset</button>
           <button ng-show="!editing[$index]" ng-click="edit($index)">edit</button>
           <button ng-show="!editing[$index]" ng-click="remove($index)">remove</button>
 

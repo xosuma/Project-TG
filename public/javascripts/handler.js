@@ -90,13 +90,13 @@
             'update': { method:'PUT' }
           });
         }]);
-
-    app.controller('ScheduleController', ['$scope', 'Schedules', '$cookies', function ($scope, Schedules, $cookies) {
+        
+    app.controller('ScheduleController', ['$scope', 'Schedules', 'Users', '$cookies', function ($scope, Schedules, Users, $cookies) {
           $scope.editing = [];
           $scope.schedules = Schedules.query();
+          $scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
-          
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
             var schedule = new Schedules({ name: $scope.newSchedule, completed: false });
@@ -130,16 +130,16 @@
           }
         }]);
    
+   
     app.controller('UserController', ['$scope', 'Users', '$cookies','$http',function ($scope, Users, $cookies,$http) {
           $scope.editing = [];
           $scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
-          //var query = {name:'dfdf'}
 
           $scope.save = function(){
             if(!$scope.newUser || $scope.newUser.length < 1) return;
-            var user = new Users({ name: $scope.newUser});
+            var user = new Users({ name: $scope.user, email:$scope.emails, address: $scope.newUser});
 
 
             user.$save(function(){
