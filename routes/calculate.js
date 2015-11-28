@@ -38,7 +38,7 @@ var fixed = [
 var riders = [
 	{
 		name: "Van",
-		max: 6,
+		max: 15,
 		lat: 44.96804683,
 		lng: -93.22277069,
 		taking: []
@@ -55,6 +55,16 @@ var riders = [
 
 function calc(fixed, users, riders){
 
+	var total = users.length;
+	var riderMax = 0;
+	for (var r = 0;r<riders.length;r++){
+		riderMax=riderMax+riders[r].max;
+	}
+	console.log(riderMax);
+	if (riderMax<total){
+		return "Too many people but cannot fulfill task";
+	}
+	else {
 	//find the closest locations from users to fixed location
 	for (var i = 0;i< users.length;i++){
 		var loc1 = users[i];
@@ -84,16 +94,6 @@ function calc(fixed, users, riders){
 	}
 
 	//
-	var total = users.length;
-	var riderMax = 0;
-	for (var r = 0;r<riders.length;r++){
-		riderMax=riderMax+riders[r].max;
-	}
-	console.log(riderMax);
-	if (riderMax<total){
-		return "Too many people but cannot fulfill task";
-	}
-	else {
 		for (var i = 0;i< riders.length;i++){
 			var rider = riders[i];
 			var init = true;
@@ -120,7 +120,7 @@ function calc(fixed, users, riders){
 						n--;
 						total--;
 					}
-					rider[i] = rider;
+					riders[i] = rider;
 				}
 				else {
 
@@ -142,7 +142,9 @@ function calc(fixed, users, riders){
 
 				}
 			}
+
 		}
+		return riders;
 
 }
 function findMax(arrObj){
@@ -195,7 +197,7 @@ router.post('/',function(req, res, next) {
 		if (data.length>0){
 			var users = data[0]["join"];
 			console.log(data[0]["join"]);
-			calc(fixed,users,riders);
+			res.json(calc(fixed,users,riders));
 		}
 	})
 
