@@ -11,14 +11,15 @@ router.get('/', function(req, res, next) {
     res.json(users);
   });
 });
-
+/*
 router.get('/findID', function(req, res, next) {
+  console.log(req.query.email);
 //  console.log(req.query.email);
   /*User.find({name: req.cookies["user"]}, function (err, users) {
     if (err) return next(err);
     res.json(users);
-  });*/
-});
+  });
+});*/
 
 /* POST /users */
 router.post('/', function(req, res, next) {

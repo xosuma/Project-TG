@@ -1,5 +1,7 @@
 (function () {
     var app = angular.module('tool', ['ngCookies','ngRoute','ngResource']);
+
+    var origin = window.location.href;
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider 
           .when('/register', {
@@ -12,13 +14,29 @@
         }).otherwise({redirectTo: '/'})
     }])
 
+
     app.controller('loginController',['$scope','$http','$cookies','$rootScope',function($scope,$http,$cookies,$rootScope){
         //need to fix
-        if (window.location.href.length>50){
+        $scope.orig = origin;
+        var curURL = window.location.href;
+        var res = curURL.match(/access_token/g);
+        var c = curURL.match(/amazonaws/g);
+        if (c==null||c==undefined){         
+         document.getElementById("googleLink").href = "http://accounts.google.com/o/oauth2/auth?client_id=1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&immediate=false&response_type=token&redirect_uri=http://localhost:3000";
+        }
+        else {                           
+         document.getElementById("googleLink").href = "http://accounts.google.com/o/oauth2/auth?client_id=1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&immediate=false&response_type=token&redirect_uri=http://ec2-52-23-247-16.compute-1.amazonaws.com:3000";
+
+        }
+        if (res==null||res==undefined){
+
+        }
+        else {
           var d = window.location.href.split("&");
           d = d[0].split("=");
           d = d[1]; 
           $rootScope.token = d;
+
           var url = "https://www.googleapis.com/plus/v1/people/me?access_token="+d;
           $http({ method: 'GET', url:url})
             .success(function (data, status, header, config) {
@@ -156,6 +174,15 @@
               $scope.attending[index] = false;
           }
           
+          $scope.finalize = function(index){
+            $http({method:'POST',url: '/calculate',data:{name: "yag"}})
+            .success(function(data,status,header,config){
+              
+            })
+            .error(function(){
+              alert("Server is down, try again later");
+            })
+          }
         }]);
    
    
@@ -179,12 +206,10 @@
                     $scope.users.push(user);
                     $scope.newUser = ''; // clear textbox
                   });
-
                   window.location.href="/";
                 })
                 .error(function () {
                     alert("Server is down, try again later");
-
                     window.location.href="/";
                 })
             
