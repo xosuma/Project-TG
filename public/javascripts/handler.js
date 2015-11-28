@@ -114,16 +114,16 @@
             });
           }
         }]);
-        
+   
     app.controller('UserController', ['$scope', 'Users', '$cookies', function ($scope, Users, $cookies) {
           $scope.editing = [];
           $scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
-          
           $scope.save = function(){
             if(!$scope.newUser || $scope.newUser.length < 1) return;
             var user = new Users({ name: $scope.newUser});
+
 
             user.$save(function(){
               $scope.users.push(user);
@@ -133,3 +133,6 @@
         }]);
 
 })();
+
+
+

@@ -46,11 +46,13 @@ app.get('/', function(req,res){
 app.post('/login',function(req,res){
   var name = req.body.user;
   var email = req.body.email;
+  var test;
   //check database
   //return cookie
   res.cookie("user",name,{maxAge:900000});
   res.cookie("email",email,{maxAge:900000});
   res.cookie("loggedIn",'true',{maxAge:900000});
+  res.cookie("test",test);
   //여기에다가 데이터베이스 체크해서 새유저면 boolean값을보내서 주소를 쳐쓰게합시다
   //
   //res.cookie("isNew",boolean,{maxAge:900000});
