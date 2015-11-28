@@ -56,12 +56,15 @@ app.post('/login',function(req,res){
     res.cookie("user",name,{maxAge:900000});
     res.cookie("email",email,{maxAge:900000});
     res.cookie("loggedIn",true,{maxAge:900000});
-
-    if (users==[]){
+    res.cookie("token",req.body.token,{maxAge:900000})
+    console.log(users[0]);
+    if (users==[]||users[0]==undefined){
       res.cookie("isNew",true,{maxAge:900000});
+      res.cookie("admin",false,{maxAge:900000});
     }
     else {
-
+      console.log(users[0]["admin"]);
+    
       if (users[0]["admin"]){
         res.cookie("admin",true,{maxAge:900000})
       }
@@ -85,6 +88,9 @@ app.post('/logout',function(req,res){
   res.clearCookie('user');
   res.clearCookie('email');
   res.clearCookie('loggedIn');
+  res.clearCookie('isNew');
+  res.clearCookie('admin');
+  res.clearCookie('token');
   console.log("cookie deleted successfully");
   res.send("cookie deleted");
 });

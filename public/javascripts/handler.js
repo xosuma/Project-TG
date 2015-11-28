@@ -18,21 +18,21 @@
           var d = window.location.href.split("&");
           d = d[0].split("=");
           d = d[1]; 
+          $rootScope.token = d;
           var url = "https://www.googleapis.com/plus/v1/people/me?access_token="+d;
-
           $http({ method: 'GET', url:url})
             .success(function (data, status, header, config) {
               //console.log(data);
               var name = data["name"]["givenName"]+" "+data["name"]["familyName"];
               var email = data["emails"][0]["value"];
 
-            $http({ method: 'POST', url: '/login', data: {user: name,email: email}})
+            $http({ method: 'POST', url: '/login', data: {user: name,email: email,token:d}})
               .success(function (data, status, header, config) {
 
                 //console.log($cookies.getAll());
-                
+                console.log($cookies.getAll());
                 if ($cookies.get("isNew")=='true'){
-                  window.location.href = '/register';
+                  window.location.href = '/#/register';
                 }
                 else {
                   window.location.reload();
@@ -54,8 +54,10 @@
         }
 */
         $scope.signOut = function(){
-          
-          /*  var auth2 = gapi.auth2.getAuthInstance();
+
+        // var ur =  "https://accounts.google.com/o/oauth2/revoke?token="+$cookies.get("token");
+         //$http({method:'POST',url:ur}).success(function(){console.log("success");}).error(function(){});
+           /* var auth2 = gapi.auth2.getAuthInstance();
             auth2.signOut().then(function () {
               console.log('User signed out.');
             });
