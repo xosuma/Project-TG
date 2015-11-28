@@ -13,11 +13,34 @@ a {
   	color: #FFFFFF;
 }
 
-i{
-	color:#FFFFFF;
-}
 #but {
-	background-color: #dd4b39;
-	width: 100px;
-	height: 50px;
+	width: 140px;
+    height: 36px;
+    color: #FFFFFF;
+    border-bottom: solid 2px #02336d;
+    background: #dd4b39;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.1);
+}
+.dam {
+	width: 140px;height:36px;
+}
+#but:hover,
+#but:focus{
+   border-bottom: solid 2px #04538d;
+   background: #427FED;
+   cursor: pointer;
+}
+#but .google-icon{
+    margin: 10px 0 0 6px;
+    float: left; 
+    fill: #FFFFFF;   
+}
+
+#but .sign-in-text{
+    text-align: center;
+    vertical-align: middle;
+    float: right;
+
+    margin: 1px 0 0 0;
+    width: 110px;
 }

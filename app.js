@@ -39,22 +39,46 @@ app.use(express.static(path.join(__dirname, 'views')));
 app.use('/schedules', schedules);
 app.use('/users', users);
 
+var User = require('./models/User.js');
+
 app.get('/', function(req,res){
   res.sendFile('index.html');
 });
 
 app.post('/login',function(req,res){
+
   var name = req.body.user;
   var email = req.body.email;
-  res.cookie("user",name,{maxAge:900000});
-  res.cookie("email",email,{maxAge:900000});
-  res.cookie("loggedIn",'true',{maxAge:900000});
+  User.find({email: email}, function (err, users) {
+    if (err) return next(err);
+
+
+    res.cookie("user",name,{maxAge:900000});
+    res.cookie("email",email,{maxAge:900000});
+    res.cookie("loggedIn",true,{maxAge:900000});
+
+    if (users==[]){
+      res.cookie("isNew",true,{maxAge:900000});
+    }
+    else {
+
+      if (users[0]["admin"]){
+        res.cookie("admin",true,{maxAge:900000})
+      }
+      else{
+        res.cookie("admin",false,{maxAge:900000})
+      }
+    }
+
+   res.send("check cookie");
+
+  });
+ /* 
 
   //여기에다가 데이터베이스 체크해서 새유저면 boolean값을보내서 주소를 쳐쓰게합시다
   //
   //res.cookie("isNew",boolean,{maxAge:900000});
-  console.log("cookie created successfully");
-  res.send("check cookie");
+  console.log("cookie created successfully");*/
 });
 
 app.post('/logout',function(req,res){

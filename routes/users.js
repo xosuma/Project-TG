@@ -13,10 +13,11 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/findID', function(req, res, next) {
-  User.find({name: req.cookies["user"]}, function (err, users) {
+//  console.log(req.query.email);
+  /*User.find({name: req.cookies["user"]}, function (err, users) {
     if (err) return next(err);
     res.json(users);
-  });
+  });*/
 });
 
 /* POST /users */
