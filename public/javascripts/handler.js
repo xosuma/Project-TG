@@ -14,44 +14,40 @@
 
     app.controller('loginController',['$scope','$http','$cookies','$rootScope',function($scope,$http,$cookies,$rootScope){
         //need to fix
-        if (window.location.href.length>30){
+        if (window.location.href.length>50){
           var d = window.location.href.split("&");
           d = d[0].split("=");
           d = d[1]; 
           var url = "https://www.googleapis.com/plus/v1/people/me?access_token="+d;
+
           $http({ method: 'GET', url:url})
             .success(function (data, status, header, config) {
               //console.log(data);
               var name = data["name"]["givenName"]+" "+data["name"]["familyName"];
               var email = data["emails"][0]["value"];
+
             $http({ method: 'POST', url: '/login', data: {user: name,email: email}})
-            .success(function (data, status, header, config) {
-              //console.log($cookies.getAll());
-              $http({ method: 'GET', url: '/Users/findID'})
-                .success(function (data, status, header, config) {
-                 if (data.length>0){
-                  window.location.reload();
-                 }
-                 else {
-                  window.location.href="/#/register";
-                 }
+              .success(function (data, status, header, config) {
+
+                //console.log($cookies.getAll());
                 
+                if ($cookies.get("isNew")=='true'){
+                  window.location.href = '/register';
+                }
+                else {
+                  window.location.reload();
+                }
+
                 })
-                .error(function () {
-                    alert("Server is down, try again later");
-                })
-
-
-
-            })
-            .error(function () {
+               .error(function () {
                 alert("Server is down, try again later");
-            })
+                })
             })
             .error(function () {
                 alert("Server is down, try again later");
             })
         }
+        
 /*
         $scope.callfun = function(name,email){
 
@@ -75,6 +71,10 @@
 
         $scope.isLoggedIn = function () {
             return $cookies.get("loggedIn") == 'true';
+        }
+
+        $scope.adminLoggedIn = function(){
+          return $cookies.get("admin")=='true';
         }
 
     }]);
@@ -171,7 +171,7 @@
             
           }
         }]);
-
+  
 })();
 
 
