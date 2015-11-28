@@ -100,7 +100,6 @@
           $scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
-          $scope.address = '';
           $scope.attend = false;
          
           $scope.save = function(){
@@ -139,13 +138,16 @@
               var schedule = $scope.schedules[index];
               var user = $scope.users;
               var indexLength = $scope.users.length;
+              var lat, lng, address;
               for (var i = 0; i < indexLength; i++)
               {
-                  if(user[i].name = $scope.user){
-                       $scope.address = user[i].address;
+                  if(user[i].email == $scope.emails){
+                       address = user[i].address;
+                       lat = user[i].lat;
+                       lng = user[i].lng;
                   } 
               }
-              schedule.join.push({user:$scope.user,email:$scope.emails,address:$scope.address});
+              schedule.join.push({user:$scope.user,email:$scope.emails,address:address, lat:lat, lng:lng});
               Schedules.update({id: schedule._id}, schedule);
               $scope.attending[index] = true;
           }
