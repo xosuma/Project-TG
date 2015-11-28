@@ -2,7 +2,9 @@
 <html>
 	<head>
 		<meta name="google-signin-client_id" content="1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com">
-	    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+	    <link rel="stylesheet" href="stylesheets/google-plus-signin.css">
+        <link rel="stylesheet" href="stylesheets/style.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
     </head>
 	<body ng-app="tool">  
@@ -14,8 +16,10 @@
     			<div ng-view></div>
 			</div>
             <div ng-hide="isLoggedIn()">
+                <div id="but">
                 <i class="fa fa-google-plus"><a href="
     http://accounts.google.com/o/oauth2/auth?client_id=1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&immediate=false&response_type=token&redirect_uri=http://localhost:3000">Sign in</a></i>
+                </div>
             </div>
 		</div>
 		<script>

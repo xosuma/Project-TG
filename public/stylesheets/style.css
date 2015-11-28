@@ -3,6 +3,21 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
+a:link{
+  color: #FFFFFF;
+  text-decoration: :none;
+
+}
 a {
-  color: #00B7FF;
+	text-decoration: none;
+  	color: #FFFFFF;
+}
+
+i{
+	color:#FFFFFF;
+}
+#but {
+	background-color: #dd4b39;
+	width: 100px;
+	height: 50px;
 }
