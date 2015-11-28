@@ -1,11 +1,16 @@
-body {
-  padding: 50px;
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+p.headline{
+  font-family: "Comic Sans MS";
+  font-size: 25px;
+  font-weight: bold;
+}
+
+ul li{
+  width: 440px;
 }
 
 a:link{
   color: #FFFFFF;
-  text-decoration: :none;
+  text-decoration: none;
 
 }
 a {

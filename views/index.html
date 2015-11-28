@@ -7,23 +7,20 @@
 
     </head>
 	<body ng-app="tool">  
-
 		<div id="man" ng-controller="loginController">
-
-			<div ng-show="isLoggedIn()">
+            <p class="headline"> YAG Ride - ver. LTY매력어필용 </p>
+            <div id="but" ng-hide="isLoggedIn()">
+                <a class="dam sign-in-text" href="http://accounts.google.com/o/oauth2/auth?client_id=1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&immediate=false&response_type=token&redirect_uri=http://localhost:3000"><i class="fa fa-google-plus google-icon">Sign in</i>
+                </a>
+            </div>
+            
+            <div ng-show="isLoggedIn()">
 				<button ng-click="signOut()" type="submit">Sign out</button>
     			<div ng-view></div>
 			</div>
-            <div ng-hide="isLoggedIn()">
-                <div id="but">
-                <a class="dam sign-in-text" href="
-                http://accounts.google.com/o/oauth2/auth?client_id=1077355752509-tke5rmc8v4bpatdupmd9q4rbi536d1al.apps.googleusercontent.com&scope=https%3A%2F%2Fwww.googleapis.com%2Fauth%2Fuserinfo.email&immediate=false&response_type=token&redirect_uri=http://localhost:3000">
-                            <i class="fa fa-google-plus google-icon">Sign in</i>
-                </a>
-                </div>
-            </div>
 		</div>
-		<script>
+        <br/>
+        <script>
            /* function onSuccess(googleUser) {
 
                 var profile = googleUser.getBasicProfile();

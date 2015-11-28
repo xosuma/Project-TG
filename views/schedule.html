@@ -1,10 +1,16 @@
-<div ng-controller="ScheduleController">
-  {{user}}<br>
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+<br/><div ng-controller="ScheduleController">
+  <strong>Name: </strong>{{user}}<br>
       <ul>
         <li ng-repeat="schedule in schedules">
           {{schedule.name}}
+<<<<<<< Updated upstream
           <button ng-show="!editing[$index]" ng-click="join($index)">Join</button>
           <button ng-show="!editing[$index]" ng-click="">Reset</button>
+=======
+          <button ng-show="!editing[$index]" ng-click="" class="btn btn-primary">Join</button>
+          <button ng-show="!editing[$index]" ng-click="" class="btn btn-default">Reset</button>
+>>>>>>> Stashed changes
           <button ng-show="!editing[$index]" ng-hide="!adminLoggedIn()" ng-click="edit($index)">edit</button>
           <button ng-show="!editing[$index]" ng-hide="!adminLoggedIn()" ng-click="remove($index)">remove</button>
 
