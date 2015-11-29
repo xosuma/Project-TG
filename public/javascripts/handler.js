@@ -175,9 +175,10 @@
           }
           
           $scope.finalize = function(index){
-            $http({method:'POST',url: '/calculate',data:{name: "yag"}})
+
+            $http({method:'POST',url: '/calculate',data:{name: $scope.schedules[index].name}})
             .success(function(data,status,header,config){
-              
+              console.log(data);
             })
             .error(function(){
               alert("Server is down, try again later");
