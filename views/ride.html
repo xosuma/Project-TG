@@ -1,0 +1,15 @@
+<div>
+	<table ng-repeat="ride in riders">
+		<tr >
+			<td><h3>{{ride.name}}</h3></td>
+		</tr>
+		<tr ng-repeat="p in ride.taking">
+			<td>
+				{{p.name}}
+			</td>
+			<td>
+				{{p.email}}
+			</td>
+		</tr>
+  	</table>
+</div>

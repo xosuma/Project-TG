@@ -15,12 +15,12 @@
           <button ng-show="editing[$index]" ng-hide="!adminLoggedIn()" ng-click="cancel($index)">cancel</button>
         </li>
       </ul>
-      <div ng-hide="!adminLoggedIn()">
+      <div >
         New Schedules <input type="text" ng-model="newSchedule"><button ng-click="save()">Create</button>
       </div>
 </div>
 
 <!--div ng-show="adminLoggedIn()" ng-controller="adminController">
   riders
-  pick-up loations
+  pick-up loations  ng-hide="!adminLoggedIn()"
 </div-->

@@ -4,6 +4,10 @@
     var origin = window.location.href;
     app.config(['$routeProvider', function ($routeProvider) {
         $routeProvider 
+          .when('/ride/:schedule', {
+            templateUrl: '/ride.html',
+            controller: 'rideController'
+          })
           .when('/register', {
             templateUrl: '/register.html',
             controller: 'UserController'
@@ -82,7 +86,7 @@
           */
           $http({ method: 'POST', url: '/logout'})
             .success(function (data, status, header, config) {
-                location.reload();
+                window.location.href="/";
             })
             .error(function () {
                 alert("Server is down, try again later");
@@ -178,13 +182,14 @@
 
             $http({method:'POST',url: '/calculate',data:{name: $scope.schedules[index].name}})
             .success(function(data,status,header,config){
-              for (var k = 0;k<data.length;k++){
+                window.location.href="/#/ride/"+$scope.schedules[index].name;
+              /*for (var k = 0;k<data.length;k++){
 
                 console.log(data[k].name+" is taking following people: \n");
                 for (var y = 0;y<data[k].taking.length;y++){  
                   console.log(data[k].taking[y].name+" at "+data[k].taking[y].assigned_location);
                 }
-              }
+              }*/
 
             })
             .error(function(){
@@ -224,6 +229,35 @@
           }
         }]);
   
+  app.controller('rideController',['$scope','$routeParams','$cookies','$http',function($scope,$routeParams,$cookies,$http){
+    $scope.riders;
+    $http({method:'GET',url: '/calculate/grab',params:{name: $routeParams.schedule}})
+            .success(function(data,status,header,config){
+                if (data=='fail'){
+                  console.log("fail");
+                }
+                else {
+                  $scope.riders = JSON.parse(data);
+                  console.log($scope.riders);
+                }
+              /*for (var k = 0;k<data.length;k++){
+
+                console.log(data[k].name+" is taking following people: \n");
+                for (var y = 0;y<data[k].taking.length;y++){  
+                  console.log(data[k].taking[y].name+" at "+data[k].taking[y].assigned_location);
+                }
+              }*/
+
+            })
+            .error(function(){
+              alert("Server is down, try again later");
+            })
+
+
+
+  }])
+
+
 })();
 
 

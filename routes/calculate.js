@@ -4,7 +4,54 @@ var mongoose = require('mongoose');
 var User = require('../models/User.js');
 var Schedule = require('../models/Schedule.js');
 
+var fixed = [
+	{
+		name: "University Commons",
+		address: "",
+		lat: 44.96976229,
+		lng: -93.22253466,
+		n: []
+	},
+	{
+		name: "Wahu",
+		address: "",
+		lat:44.97287808,
+		lng:-93.22317839,
+		n: []
+	},
+	{
+		name: "Yudoff",
+		address: "",
+		lat:44.97237334024413,
+		lng:-93.23601007461548,
+		n: []
+	},
+	{
+		name: "McDonald",
+		address: "",
+		lat:44.98011471,
+		lng:-93.2345295,
+		n: []
+	}
+];
 
+var riders = [
+	{
+		name: "Van",
+		max: 15,
+		lat: 44.96804683,
+		lng: -93.22277069,
+		taking: []
+	},
+	{
+		name: "Yosub",
+		max: 4,
+		lat: 44.97328414,
+		lng: -93.24716806,
+		taking: []
+
+	}
+];
 
 function calc(fixed, users, riders){
 
@@ -142,67 +189,37 @@ function deg2rad(deg) {
 
 var users;
 router.post('/',function(req, res, next) {
-	var fixed = [
-	{
-		name: "University Commons",
-		address: "",
-		lat: 44.96976229,
-		lng: -93.22253466,
-		n: []
-	},
-	{
-		name: "Wahu",
-		address: "",
-		lat:44.97287808,
-		lng:-93.22317839,
-		n: []
-	},
-	{
-		name: "Yudoff",
-		address: "",
-		lat:44.97237334024413,
-		lng:-93.23601007461548,
-		n: []
-	},
-	{
-		name: "McDonald",
-		address: "",
-		lat:44.98011471,
-		lng:-93.2345295,
-		n: []
-	}
-];
-
-var riders = [
-	{
-		name: "Van",
-		max: 15,
-		lat: 44.96804683,
-		lng: -93.22277069,
-		taking: []
-	},
-	{
-		name: "Yosub",
-		max: 4,
-		lat: 44.97328414,
-		lng: -93.24716806,
-		taking: []
-
-	}
-];
-	//var k = JSON.parse(req.query.name);
 	var k = req.body.name;
 	Schedule.find({name:k},function(err,data){
 		if (err) return next(err);
 		
+		var users = data[0]["join"];
+		var val = calc(fixed,users,riders);
 		if (data.length>0){
-			var users = data[0]["join"];
-			console.log(data[0]["join"]);
-			res.json(calc(fixed,users,riders));
+			Schedule.update({name: k},{ride: JSON.stringify(val)},function(err,data){
+				if (err) return next(err);
+				res.send("success");
+			})
+
 		}
 	})
 
 
+});
+
+router.get('/grab',function(req,res,next){
+k = req.query.name;	//var k = JSON.parse(req.query.name);
+	Schedule.find({name:k},function(err,data){
+		if (err) return next(err);
+		if (data.length>0){
+			console.log(data[0].ride);
+			res.json(data[0].ride);
+		}
+		else {
+			res.send('fail');
+		}
+
+	})
 });
 
 
