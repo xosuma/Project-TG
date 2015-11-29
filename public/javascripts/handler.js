@@ -111,7 +111,7 @@
           });
         }]);
         
-    app.controller('ScheduleController', ['$scope', 'Schedules', 'Users', '$cookies', function ($scope, Schedules, Users, $cookies) {
+    app.controller('ScheduleController', ['$scope', 'Schedules', 'Users', '$cookies', '$http',function ($scope, Schedules, Users, $cookies,$http) {
           $scope.editing = [];
           $scope.attending = [];
           $scope.schedules = Schedules.query();
@@ -178,7 +178,14 @@
 
             $http({method:'POST',url: '/calculate',data:{name: $scope.schedules[index].name}})
             .success(function(data,status,header,config){
-              console.log(data);
+              for (var k = 0;k<data.length;k++){
+
+                console.log(data[k].name+" is taking following people: \n");
+                for (var y = 0;y<data[k].taking.length;y++){  
+                  console.log(data[k].taking[y].name+" at "+data[k].taking[y].assigned_location);
+                }
+              }
+
             })
             .error(function(){
               alert("Server is down, try again later");
