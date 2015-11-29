@@ -234,7 +234,8 @@
     $http({method:'GET',url: '/calculate/grab',params:{name: $routeParams.schedule}})
             .success(function(data,status,header,config){
                 if (data=='fail'){
-                  console.log("fail");
+                  alert("does not exist");
+                  window.location.href="/";
                 }
                 else {
                   $scope.riders = JSON.parse(data);
