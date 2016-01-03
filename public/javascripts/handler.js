@@ -13,8 +13,7 @@
             controller: 'UserController'
           })
             .when('/', {
-            templateUrl: '/schedule.html',
-            controller: 'ScheduleController'
+            templateUrl: '/schedule.html'
         }).otherwise({redirectTo: '/'})
     }])
 
@@ -110,7 +109,15 @@
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
           $scope.attend = false;
-          
+          $scope.address="";
+          $http({method:'GET',url: '/users/getInfo',params:{email: $scope.emails}})
+            .success(function(data,status,header,config){
+              $scope.address=data[0].address;
+            })
+            .error(function(){
+              alert("Server is down, try again later");
+            })
+
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
             var schedule = new Schedules({ name: $scope.newSchedule, join: [] });
@@ -184,6 +191,29 @@
             })
           }
 
+          $scope.infoSave = function(){
+            if(!$scope.newUser || $scope.newUser.length < 1) return;
+            //GEOCODE
+            var api = "AIzaSyA-G6dLv9YHY-_HE7W87Dw-IjdE17mb3pQ";
+            var url= "https://maps.googleapis.com/maps/api/geocode/json?address="+$scope.newAddress+"&key="+api;
+            $http({ method: 'GET', url: url})
+                .success(function (data, status, header, config) {
+                  var lat = data["results"][0]["geometry"]["location"]["lat"];
+                  var lng = data["results"][0]["geometry"]["location"]["lng"];
+                  //Should update instead of adding.
+                  /*var user = new Users({ name: $scope.user, email: $scope.emails, address: $scope.newUser, admin: false, lat: lat,lng: lng});
+                  user.$save(function(){
+                    $scope.users.push(user);
+                    $scope.newUser = ''; // clear textbox
+                  });*/
+                  window.reload();
+                })
+                .error(function () {
+                    alert("Server is down, try again later");
+                    window.location.href="/";
+                })
+            
+          }
 
 
         }]);

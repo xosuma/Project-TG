@@ -29,6 +29,16 @@ router.post('/', function(req, res, next) {
   });
 });
 
+/* GET /users/getInfo/:email */
+router.get('/getInfo', function(req, res, next) {
+  console.log(req.query.email);
+  User.find({email: req.query.email},function(err,post){
+    if (err) return next(err);
+    res.json(post);
+  });
+});
+
+
 /* GET /users/id */
 router.get('/:id', function(req, res, next) {
   User.findById(req.params.id, function (err, post) {
