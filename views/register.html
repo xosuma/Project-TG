@@ -1,9 +1,23 @@
+<br />
+<br />
+<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
 <div ng-controller="UserController">
-    {{hello}}<br />
-  <ul>
+	<!--
+	<ul>
         <li ng-repeat="user in users">
           {{user.name}}
         </li>
-      </ul>
-  New Address <input type="text" ng-model="newUser"><button ng-click="save()">Add</button>
+    </ul>
+	-->
+    <p>
+    	Please type in the <b>full exact address</b> of where you wish to get pick up.<br />
+    	자신이 라이드를 타고 싶은 장소 주소를 <b>정확히</b> 적으십시오. <br /> <br />
+
+    	For example, if you wish to get picked up from Tarrie house, you type in following: <br />
+    	예를 들면, 만약 태리하우스 부근에서 타고 싶으시다면 아래 주소처럼 입력하시면됩니다.
+    	<pre>609 Oak St. SE Minneapolis, MN 55414</pre>
+    </p>
+  New Address(새로운주소): <input type="text" ng-model="newUser"><button ng-click="save()">Add</button>
+  <br />
+  <br />
 </div>

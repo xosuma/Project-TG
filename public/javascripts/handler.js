@@ -70,20 +70,7 @@
             })
         }
         
-/*
-        $scope.callfun = function(name,email){
-
-        }
-*/
         $scope.signOut = function(){
-
-        // var ur =  "https://accounts.google.com/o/oauth2/revoke?token="+$cookies.get("token");
-         //$http({method:'POST',url:ur}).success(function(){console.log("success");}).error(function(){});
-           /* var auth2 = gapi.auth2.getAuthInstance();
-            auth2.signOut().then(function () {
-              console.log('User signed out.');
-            });
-          */
           $http({ method: 'POST', url: '/logout'})
             .success(function (data, status, header, config) {
                 window.location.href="/";
@@ -123,7 +110,7 @@
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
           $scope.attend = false;
-         
+          
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
             var schedule = new Schedules({ name: $scope.newSchedule, join: [] });
@@ -196,6 +183,9 @@
               alert("Server is down, try again later");
             })
           }
+
+
+
         }]);
    
    
