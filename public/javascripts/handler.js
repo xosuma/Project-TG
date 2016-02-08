@@ -104,24 +104,47 @@
     app.controller('ScheduleController', ['$scope', 'Schedules', 'Users', '$cookies', '$http',function ($scope, Schedules, Users, $cookies,$http) {
           $scope.editing = [];
           $scope.attending = [];
-          $scope.schedules = Schedules.query();
-          $scope.users = Users.query();
+          //$scope.schedules = Schedules.query();
+          //$scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
           $scope.attend = false;
           $scope.address="";
+          $scope.schedules=[];
+          $scope.currentUser={};
+          //get current user info
           $http({method:'GET',url: '/users/getInfo',params:{email: $scope.emails}})
             .success(function(data,status,header,config){
-              $scope.address=data[0].address;
+              $scope.currentUser = data[0];
+              //get schedules
+              $http({method:'GET',url:'/schedules'}).success(function(data,status,header,config){
+                $scope.schedules = data;
+                angular.forEach($scope.schedules,function(obj){
+
+                  var c = obj.join;
+                  obj.attending = false;
+                  obj.total = obj.join.length;
+                  c.forEach(function(entry){
+                    if (entry.email==$scope.currentUser.email){
+                      obj.attending = true;
+                    }
+                  });
+                });
+              }).error(function(){
+                alert("Server is down, try again later");
+              })
+
             })
             .error(function(){
               alert("Server is down, try again later");
             })
 
+          
+          
+
           $scope.save = function(){
             if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
             var schedule = new Schedules({ name: $scope.newSchedule, join: [] });
-
             schedule.$save(function(){
               $scope.schedules.push(schedule);
               $scope.newSchedule = ''; // clear textbox
@@ -152,43 +175,45 @@
           
           $scope.join = function(index){
               var schedule = $scope.schedules[index];
-              var user = $scope.users;
-              var indexLength = $scope.users.length;
+              var indexLength = schedule.join.length;
               var lat, lng, address;
-              for (var i = 0; i < indexLength; i++)
-              {
-                  if(user[i].email == $scope.emails){
-                       address = user[i].address;
-                       lat = user[i].lat;
-                       lng = user[i].lng;
-                  } 
-              }
-              schedule.join.push({user:$scope.user,email:$scope.emails,address:address, lat:lat, lng:lng});
+              schedule.join.push({user:$scope.currentUser.name,email:$scope.currentUser.email,address:$scope.currentUser.email, lat:$scope.currentUser.lat, lng:$scope.currentUser.lng});
               Schedules.update({id: schedule._id}, schedule);
-              $scope.attending[index] = true;
+              window.location.reload();
           }
           
           $scope.reset = function(index){
-              $scope.attending[index] = false;
+              var schedule = $scope.schedules[index];
+              var indexLength = schedule.join.length;
+              var lat, lng, address;
+              var isExist = false;
+              var index = 0;
+              for (var i = 0; i < indexLength; i++)
+              {
+                  if(schedule.join[i].email == $scope.currentUser.email){
+                    index = i;
+                    isExist = true;
+                  } 
+              }
+              if (isExist){
+                schedule.join.splice(index,1);
+                Schedules.update({id: schedule._id}, schedule);
+                window.location.reload();
+              }
           }
           
           $scope.finalize = function(index){
-
-            $http({method:'POST',url: '/calculate',data:{name: $scope.schedules[index].name}})
+            $http({method:'POST',url: '/calculate',data:{_id: $scope.schedules[index]._id}})
             .success(function(data,status,header,config){
-                window.location.href="/#/ride/"+$scope.schedules[index].name;
-              /*for (var k = 0;k<data.length;k++){
-
-                console.log(data[k].name+" is taking following people: \n");
-                for (var y = 0;y<data[k].taking.length;y++){  
-                  console.log(data[k].taking[y].name+" at "+data[k].taking[y].assigned_location);
-                }
-              }*/
-
+              window.location.href="/#/ride/"+$scope.schedules[index]._id;
             })
             .error(function(){
               alert("Server is down, try again later");
             })
+          }
+
+          $scope.view = function(index){
+              window.location.href="/#/ride/"+$scope.schedules[index]._id;
           }
 
           $scope.infoSave = function(){
@@ -251,7 +276,7 @@
   
   app.controller('rideController',['$scope','$routeParams','$cookies','$http',function($scope,$routeParams,$cookies,$http){
     $scope.riders;
-    $http({method:'GET',url: '/calculate/grab',params:{name: $routeParams.schedule}})
+    $http({method:'GET',url: '/calculate/grab',params:{_id: $routeParams.schedule}})
             .success(function(data,status,header,config){
                 if (data=='fail'){
                   alert("does not exist");

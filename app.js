@@ -48,13 +48,10 @@ app.get('/', function(req,res){
 });
 
 app.post('/login',function(req,res){
-
   var name = req.body.user;
   var email = req.body.email;
   User.find({email: email}, function (err, users) {
     if (err) return next(err);
-
-
     res.cookie("user",name,{maxAge:900000});
     res.cookie("email",email,{maxAge:900000});
     res.cookie("loggedIn",true,{maxAge:900000});
@@ -66,7 +63,6 @@ app.post('/login',function(req,res){
     }
     else {
       console.log(users[0]["admin"]);
-    
       if (users[0]["admin"]){
         res.cookie("admin",true,{maxAge:900000})
       }

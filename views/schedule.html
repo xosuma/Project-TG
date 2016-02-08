@@ -3,27 +3,33 @@
 <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
 
 <div ng-controller="ScheduleController">
-  <div class="jumbotron">
-    <p>Name: {{user}} <br />Current Address:  {{address}} 
+
+  <div class="jumbotron" ng-hide="adminLoggedIn()">
+    <p>Name: {{currentUser.name}} <br />Current Address:  {{currentUser.address}} 
     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#editModal">Edit</button></p>
   </div>
     <br> 
       <ul>
         <li ng-repeat="schedule in schedules">
-          {{schedule.name}}
-          <button ng-click="finalize($index)" class="btn btn-primary">Finalize</button>
-          <button ng-show="!editing[$index]" ng-click="join($index)" class="btn btn-primary">Join</button>
-          <button ng-show="!editing[$index]" ng-click="" class="btn btn-default">Reset</button>
+          <h3>{{schedule.name}}</h3>
+          <p># of Participants: {{schedule.total}}</p>
+          <p>Riders: {{schedule.riderString}}
+            <button type="button" class="btn btn-default" data-toggle="modal"  data-target="#addRideModal" ng-hide="!adminLoggedIn()">Add a Rider </button>
+          </p>
+          <button ng-hide="adminLoggedIn()||schedule.complete" ng-click="join($index)" class="btn btn-primary" ng-disabled="schedule.attending">Join</button>
+          <button ng-hide="adminLoggedIn()||schedule.complete" ng-click="reset($index)" class="btn btn-default" ng-disabled="!schedule.attending">Reset</button>
+          <button ng-hide="schedule.complete||!adminLoggedIn()" ng-click="finalize($index)" class="btn btn-primary">Finalize</button>
+          <button ng-show="!editing[$index]" ng-hide="schedule.complete||!adminLoggedIn()" ng-click="edit($index)">edit</button>
 
-          <button ng-show="!editing[$index]" ng-hide="!adminLoggedIn()" ng-click="edit($index)">edit</button>
+          <button ng-click="view($index)" ng-hide="!schedule.complete" class="btn btn-primary" ng-show="schedule.complete">View ride </button>
           <button ng-show="!editing[$index]" ng-hide="!adminLoggedIn()" ng-click="remove($index)">remove</button>
 
           <input ng-show="editing[$index]" type="text" ng-model="schedule.name">
-          <button ng-show="editing[$index]" ng-hide="!adminLoggedIn()" ng-click="update($index)">update</button>
-          <button ng-show="editing[$index]" ng-hide="!adminLoggedIn()" ng-click="cancel($index)">cancel</button>
+          <button ng-show="editing[$index]&&adminLoggedIn()" ng-click="update($index)">update</button>
+          <button ng-show="editing[$index]&&adminLoggedIn()" ng-click="cancel($index)">cancel</button>
         </li>
       </ul>
-    <button type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">Add New Schedule</button>
+    <button ng-show="adminLoggedIn()" type="button" class="btn btn-danger btn-lg" data-toggle="modal" data-target="#myModal">Add New Schedule</button>
     <div class="modal fade" id="myModal" role="dialog">
       <div class="modal-dialog">
         <div class="modal-content">
@@ -62,9 +68,58 @@
         </div>
       </div>
     </div>
+
+     <div class="modal fade" id="addRideModal" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;  </button>
+            <h4 class="modal-title">Assign a rider</h4>
+          </div>
+
+          <div class="modal-body">
+
+            <table>
+              <tr>
+                <td> email:
+                </td>
+                <td>
+            <input type="text" ng-model="rideEmail" size="20">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  or
+                </td>
+              </tr>
+              <tr>
+                <td>name:
+                </td>
+                <td> <input type="text" ng-model="newRide">
+                </td>
+              </tr>
+              <tr>
+                <td>address:
+                </td>
+                <td>
+                  <input type="text" size="50" ng-model="newAddress">
+                </td>
+              </tr>
+             
+            </table>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" ng-click="addRider()" data-dismiss="modal">Add</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
 </div>
 
-<!--div ng-show="adminLoggedIn()" ng-controller="adminController">
+<!-- <div ng-show="adminLoggedIn()" ng-controller="adminController">
   riders
   pick-up loations  ng-hide="!adminLoggedIn()"
-</div-->
+</div> -->

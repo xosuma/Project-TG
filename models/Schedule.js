@@ -4,7 +4,8 @@ var ScheduleSchema = new mongoose.Schema({
   name: String,
   join: [],
   ride: String,
-  complete: Boolean
+  complete: Boolean,
+  rider: []
 });
 
 module.exports = mongoose.model('Schedule', ScheduleSchema);

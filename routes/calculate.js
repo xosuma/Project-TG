@@ -189,14 +189,14 @@ function deg2rad(deg) {
 
 var users;
 router.post('/',function(req, res, next) {
-	var k = req.body.name;
-	Schedule.find({name:k},function(err,data){
+	var k = req.body._id;
+	Schedule.find({_id:k},function(err,data){
 		if (err) return next(err);
 		
 		var users = data[0]["join"];
 		var val = calc(fixed,users,riders);
 		if (data.length>0){
-			Schedule.update({name: k},{ride: JSON.stringify(val)},function(err,data){
+			Schedule.update({_id: k},{ride: JSON.stringify(val),complete:true},function(err,data){
 				if (err) return next(err);
 				res.send("success");
 			})
@@ -208,8 +208,8 @@ router.post('/',function(req, res, next) {
 });
 
 router.get('/grab',function(req,res,next){
-k = req.query.name;	//var k = JSON.parse(req.query.name);
-	Schedule.find({name:k},function(err,data){
+k = req.query._id;	//var k = JSON.parse(req.query.name);
+	Schedule.find({_id:k},function(err,data){
 		if (err) return next(err);
 		if (data.length>0){
 			console.log(data[0].ride);
