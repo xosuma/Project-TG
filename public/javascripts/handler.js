@@ -12,6 +12,10 @@
             templateUrl: '/register.html',
             controller: 'UserController'
           })
+          .when('/manage',{
+            templateUrl:'/manage.html',
+            controller:'manageController'
+          })
             .when('/', {
             templateUrl: '/schedule.html'
         }).otherwise({redirectTo: '/'})
@@ -103,6 +107,7 @@
         
     app.controller('ScheduleController', ['$scope', 'Schedules', 'Users', '$cookies', '$http',function ($scope, Schedules, Users, $cookies,$http) {
           $scope.editing = [];
+          $scope.editRide = [[],[]];
           $scope.attending = [];
           //$scope.schedules = Schedules.query();
           //$scope.users = Users.query();
@@ -112,6 +117,42 @@
           $scope.address="";
           $scope.schedules=[];
           $scope.currentUser={};
+          $scope.latestSchedule={};
+          $scope.latestDate="";
+          $scope.lastSchedule={};
+          $scope.lastDate="";
+          var initRider = [{
+            name: "Van",
+            max: 15,
+            lat: 44.96804683,
+            lng: -93.22277069,
+            taking: []
+          }];
+          $scope.viewAll = function(){
+            window.location.href="/#/manage";
+          }
+          $http({method:'GET',url:'/getLast'})
+            .success(function(data,status,header,config){
+              if (data!="no"){
+                $scope.lastSchedule = data;
+                var d = new Date($scope.lastSchedule.date.toString());
+                var mon = d.getMonth()+1;
+                $scope.lastDate = d.getFullYear()+"-"+mon+"-"+d.getDate();
+              }
+            }).error(function(){
+              alert("Server is down, try again later");
+            });
+          $http({method:'GET',url:'/getLatest'})
+            .success(function(data,status,header,config){
+              if (data!="no"){
+                $scope.latestSchedule =data;
+                var d = new Date($scope.latestSchedule.date.toString());
+                var mon = d.getMonth()+1;
+                $scope.latestDate = d.getFullYear()+"-"+mon+"-"+d.getDate();
+              }
+            }).error(function(){
+              alert("Server is down, try again later");
+            });
           //get current user info
           $http({method:'GET',url: '/users/getInfo',params:{email: $scope.emails}})
             .success(function(data,status,header,config){
@@ -120,8 +161,11 @@
               $http({method:'GET',url:'/schedules'}).success(function(data,status,header,config){
                 $scope.schedules = data;
                 angular.forEach($scope.schedules,function(obj){
-
                   var c = obj.join;
+                  d = new Date(obj.date.toString());
+                  obj.month =d.getMonth()+1;
+                  obj.year = d.getFullYear();
+                  obj.day = d.getDate();
                   obj.attending = false;
                   obj.total = obj.join.length;
                   c.forEach(function(entry){
@@ -139,21 +183,26 @@
               alert("Server is down, try again later");
             })
 
-          
-          
-
           $scope.save = function(){
-            if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
-            var schedule = new Schedules({ name: $scope.newSchedule, join: [] });
+            //if(!$scope.newSchedule || $scope.newSchedule.length < 1) return;
+            var schedule = new Schedules({ name: $scope.newTitle,date: $scope.newDate,note:$scope.newNote,complete:false,join: [],rider:initRider});
             schedule.$save(function(){
               $scope.schedules.push(schedule);
-              $scope.newSchedule = ''; // clear textbox
+              $scope.newSchedule = '';
+              $scope.newDate = '';
+              $scope.newNote='';
+              window.location.reload();
             });
           }
           
           $scope.update = function(index){
             var schedule = $scope.schedules[index];
+            schedule.date = $scope.schedules[index].newDate;
             Schedules.update({id: schedule._id}, schedule);
+            schedule.month =schedule.date.getMonth()+1;
+            schedule.year = schedule.date.getFullYear();
+            schedule.day = schedule.date.getDate();
+            console.log(schedule.month);
             $scope.editing[index] = false;
           }
 
@@ -217,32 +266,67 @@
           }
 
           $scope.infoSave = function(){
-            if(!$scope.newUser || $scope.newUser.length < 1) return;
+            if(!$scope.newAddress || $scope.newAddress.length < 1) return;
             //GEOCODE
             var api = "AIzaSyA-G6dLv9YHY-_HE7W87Dw-IjdE17mb3pQ";
             var url= "https://maps.googleapis.com/maps/api/geocode/json?address="+$scope.newAddress+"&key="+api;
             $http({ method: 'GET', url: url})
                 .success(function (data, status, header, config) {
+                  if (data["status"]!="OK"){
+                    alert("Address not valid");
+                    window.location.reload();
+                  }
                   var lat = data["results"][0]["geometry"]["location"]["lat"];
                   var lng = data["results"][0]["geometry"]["location"]["lng"];
-                  //Should update instead of adding.
-                  /*var user = new Users({ name: $scope.user, email: $scope.emails, address: $scope.newUser, admin: false, lat: lat,lng: lng});
-                  user.$save(function(){
-                    $scope.users.push(user);
-                    $scope.newUser = ''; // clear textbox
-                  });*/
-                  window.reload();
+                  Users.update({id:$scope.currentUser._id},{address:$scope.newAddress,lat:lat,lng:lng})
+                  window.location.reload();
                 })
                 .error(function () {
                     alert("Server is down, try again later");
                     window.location.href="/";
-                })
-            
+                }) 
+          }
+          var loc = {
+            "eb": {"addr":"East Bank","lat": 44.973341,"lng": -93.226496},
+            "wb": {"addr":"West Bank","lat": 44.972896,"lng": -93.246517},
+            "dt": {"addr":"Dinky Town","lat": 44.980135,"lng": -93.235767}
+          }
+          var locChange = {
+          }
+          $scope.saveRider = function(){
+            var indexOfParent = $('#addRideIndexValue').val();
+            var curSchedule = $scope.schedules[indexOfParent];
+            curSchedule.rider.push({name: $scope.newRide,loc: loc[$scope.newLoc].addr, lat: loc[$scope.newLoc].lat,lng: loc[$scope.newLoc].lng,max: $scope.newCapacity,taking:[]});
+            Schedules.update({id: curSchedule._id}, curSchedule);
+            $scope.newRide="";
+            $scope.newLoc="";
+            $scope.newCapacity="";
           }
 
+          $scope.updateRide = function(parentIndex,index){
+            var schedule = $scope.schedules[index];
+            Schedules.update({id: schedule._id}, schedule);
+            $scope.editRide[index] = false;
+          }
 
+          $scope.editRide = function(parentIndex,index){
+            console.log(parentIndex+" "+index);
+            $scope.editRide[parentIndex]=[];
+            $scope.editRide[parentIndex][index] = angular.copy($scope.schedules[parentIndex].rider[index]);
+          }
+
+          $scope.cancelRide = function(parentIndex,index){
+
+            $scope.schedules[parentIndex].rider[index] = angular.copy($scope.editRide[parentIndex][index]);
+            $scope.editRide[parentIndex][index] = false;
+          }
+
+          $scope.removeRide = function(parentIndex,index){
+            var schedule = $scope.schedules[parentIndex];
+            schedule.rider.splice(index,1);
+            Schedules.update({id: schedule._id}, schedule);
+          }
         }]);
-   
    
     app.controller('UserController', ['$scope', 'Users', '$cookies','$http',function ($scope, Users, $cookies,$http) {
           $scope.editing = [];
@@ -263,8 +347,8 @@
                   user.$save(function(){
                     $scope.users.push(user);
                     $scope.newUser = ''; // clear textbox
+                    window.location.reload();
                   });
-                  window.location.href="/";
                 })
                 .error(function () {
                     alert("Server is down, try again later");
@@ -284,24 +368,50 @@
                 }
                 else {
                   $scope.riders = JSON.parse(data);
-                  console.log($scope.riders);
                 }
-              /*for (var k = 0;k<data.length;k++){
-
-                console.log(data[k].name+" is taking following people: \n");
-                for (var y = 0;y<data[k].taking.length;y++){  
-                  console.log(data[k].taking[y].name+" at "+data[k].taking[y].assigned_location);
-                }
-              }*/
 
             })
             .error(function(){
               alert("Server is down, try again later");
             })
 
+      $scope.goBack = function(){
+        window.location.href="/#/";
+      }
+  }]);
 
+  app.controller('manageController',['$scope','$cookies','$http','Schedules',function($scope,$cookies,$http,Schedules){
+    $scope.schedules=[];
+    $http({method:'GET',url:'/getAllSchedules'})
+      .success(function(data,status,header,config){
+        $scope.schedules=data;
+        angular.forEach($scope.schedules,function(entry){
 
-  }])
+          var d = new Date(entry.date.toString());
+          var mon = d.getMonth()+1;
+          var dates = d.getFullYear()+"-"+mon+"-"+d.getDate();
+          entry.dates = dates;
+        })
+      })
+      .error(function(){
+        alert("Server is down, try again later");
+      })
+      $scope.remove = function(index){
+          var schedule = $scope.schedules[index];
+          Schedules.remove({id: schedule._id}, function(){
+          $scope.schedules.splice(index, 1);
+        });
+      }
+
+      $scope.goBack = function(){
+        window.location.href="/#/";
+      }
+
+      $scope.goView = function(index){
+        window.location.href = "/#/ride/"+$scope.schedules[index]._id;
+      }
+
+  }]);
 
 
 })();

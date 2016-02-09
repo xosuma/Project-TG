@@ -43,10 +43,41 @@ app.use('/calculate', calc);
 
 var User = require('./models/User.js');
 
+var Schedule = require('./models/Schedule.js');
 app.get('/', function(req,res){
   res.sendFile('index.html');
 });
 
+app.get('/getLast', function(req,res){
+    Schedule.find({complete:true}).sort({timeComplete:'desc'}).exec(function (err, schedules) {
+      if (err) return next(err);  
+      if (schedules.length>0){
+        res.json(schedules[0]);
+      }
+      else {
+        res.json("no");
+      }
+    });
+});
+
+app.get('/getLatest', function(req,res){
+    Schedule.find({complete:true}).sort({date:'desc'}).exec(function (err, schedules) {
+      if (err) return next(err);  
+      if (schedules.length>0){
+        res.json(schedules[0]);
+      }
+      else {
+        res.json("no");
+      }
+    });
+});
+
+app.get('/getAllSchedules', function(req,res){
+    Schedule.find().sort({date:'desc'}).exec(function (err, schedules) {
+      if (err) return next(err);  
+      res.json(schedules);
+    });
+});
 app.post('/login',function(req,res){
   var name = req.body.user;
   var email = req.body.email;

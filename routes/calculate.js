@@ -192,19 +192,17 @@ router.post('/',function(req, res, next) {
 	var k = req.body._id;
 	Schedule.find({_id:k},function(err,data){
 		if (err) return next(err);
-		
+		var item = data[0];
 		var users = data[0]["join"];
-		var val = calc(fixed,users,riders);
+		var val = calc(fixed,users,item["rider"]);
 		if (data.length>0){
-			Schedule.update({_id: k},{ride: JSON.stringify(val),complete:true},function(err,data){
+			var d = new Date();
+			Schedule.update({_id: k},{ride: JSON.stringify(val),complete:true,timeComplete:d},function(err,data){
 				if (err) return next(err);
 				res.send("success");
 			})
-
 		}
 	})
-
-
 });
 
 router.get('/grab',function(req,res,next){
@@ -221,6 +219,7 @@ k = req.query._id;	//var k = JSON.parse(req.query.name);
 
 	})
 });
+
 
 
 module.exports = router;

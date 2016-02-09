@@ -1,0 +1,15 @@
+<br />
+<br />
+<hr style="width: 100%; color: black; height: 1px; background-color:black;" />
+<div>
+	<button type="button" ng-click="goBack()" class="btn btn-default">
+		<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+	</button>
+	<ul>
+		<li ng-repeat="schedule in schedules">
+			{{schedule.dates}}
+			<button ng-show="schedule.complete" type="button" ng-click="goView($index)"> View </button>
+			<button ng-show="adminLoggedIn()" type="button" ng-click="remove($index)"> delete </button>
+		</li>
+	</ul>
+</div>

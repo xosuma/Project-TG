@@ -2,17 +2,18 @@
 <br />
 <hr style="width: 100%; color: black; height: 1px; background-color:black;" />
 <div>
-	<table ng-repeat="ride in riders">
-		<tr >
-			<td><h3>{{ride.name}}</h3></td>
-		</tr>
-		<tr ng-repeat="p in ride.taking">
-			<td>
-				{{p.name}}
-			</td>
-			<td>
-				{{p.email}}
-			</td>
-		</tr>
-  	</table>
+	<button type="button" ng-click="goBack()" class="btn btn-default">
+	<span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span> Back
+	</button>
+	<ul class="listOfRiders">
+		<li class="listRiders" ng-repeat="ride in riders">
+			<h3>{{ride.name}}</h3>
+			left: {{ride.max}}
+			<ul>
+				<li ng-repeat="person in ride.taking">
+					{{person.user}} - {{person.email}} - {{person.assigned_location}}
+				</li>
+			</ul>
+		</li>
+	</ul>
 </div>

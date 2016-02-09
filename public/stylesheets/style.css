@@ -10,22 +10,44 @@
 }
 
 ul li{
-  width: 440px;
+  width:360px;
 }
 
-a:link{
+#googleLink:link{
   color: #FFFFFF;
   text-decoration: none;
 
 }
-a {
+#googleLink {
 	 text-decoration: none;
   	color: #FFFFFF;
 }
 
 div {
-
   display:block;
+}
+
+.listOfSchedule {
+    padding:0;
+    margin:0;
+    list-style-type: none;
+  position:relative;
+}
+
+.listSchedule {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.listOfRiders {
+  padding:0;
+  margin:0;
+  list-style-type:none;
+}
+
+.listRiders {
+  display:inline-block;
+  vertical-align:top;
 }
 
 .btn-google{color:#fff;background-color:#dd4b39;border-color:rgba(0,0,0,0.2)}.btn-google:focus,.btn-google.focus{color:#fff;background-color:#c23321;border-color:rgba(0,0,0,0.2)}
