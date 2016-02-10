@@ -303,9 +303,14 @@
           }
 
           $scope.updateRide = function(parentIndex,index){
-            var schedule = $scope.schedules[index];
+            var schedule = $scope.schedules[parentIndex];
+            var loq = schedule.rider[index].loc;
+            schedule.rider[index].lat = loc[loq].lat;
+            schedule.rider[index].lng = loc[loq].lng;
+            schedule.rider[index].loc = loc[loq].addr;
             Schedules.update({id: schedule._id}, schedule);
-            $scope.editRide[index] = false;
+            $scope.editRide[parentIndex][index] = false;
+
           }
 
           $scope.editRide = function(parentIndex,index){
