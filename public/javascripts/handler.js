@@ -55,12 +55,11 @@
               .success(function (data, status, header, config) {
 
                 //console.log($cookies.getAll());
-                console.log($cookies.getAll());
                 if ($cookies.get("isNew")=='true'){
                   window.location.href = '/#/register';
                 }
                 else {
-                  window.location.reload();
+                  window.location.href='/';
                 }
 
                 })
@@ -202,7 +201,7 @@
             schedule.month =schedule.date.getMonth()+1;
             schedule.year = schedule.date.getFullYear();
             schedule.day = schedule.date.getDate();
-            console.log(schedule.month);
+           // console.log(schedule.month);
             $scope.editing[index] = false;
           }
 
@@ -310,7 +309,7 @@
           }
 
           $scope.editRide = function(parentIndex,index){
-            console.log(parentIndex+" "+index);
+           // console.log(parentIndex+" "+index);
             $scope.editRide[parentIndex]=[];
             $scope.editRide[parentIndex][index] = angular.copy($scope.schedules[parentIndex].rider[index]);
           }
@@ -333,6 +332,9 @@
           $scope.users = Users.query();
           $scope.user = $cookies.get('user');
           $scope.emails = $cookies.get('email');
+          if ($cookies.get("isNew")!='true'){
+            window.location.href='/';
+          }
 
           $scope.save = function(){
             if(!$scope.newUser || $scope.newUser.length < 1) return;
@@ -345,9 +347,15 @@
                   var lng = data["results"][0]["geometry"]["location"]["lng"];
                   var user = new Users({ name: $scope.user, email: $scope.emails, address: $scope.newUser, admin: false, lat: lat,lng: lng});
                   user.$save(function(){
-                    $scope.users.push(user);
+                     $scope.users.push(user);
                     $scope.newUser = ''; // clear textbox
-                    window.location.reload();
+                    $http({method:'POST',url:'/removeCookie'})
+                      .success(function(data,status,header,config){
+                      window.location.href="/";
+                    }).error(function(){
+                      alert("server is down");
+                    })
+                   
                   });
                 })
                 .error(function () {

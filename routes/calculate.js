@@ -4,54 +4,25 @@ var mongoose = require('mongoose');
 var User = require('../models/User.js');
 var Schedule = require('../models/Schedule.js');
 
-var fixed = [
-	{
-		name: "University Commons",
-		address: "",
-		lat: 44.96976229,
-		lng: -93.22253466,
-		n: []
-	},
-	{
-		name: "Wahu",
-		address: "",
-		lat:44.97287808,
-		lng:-93.22317839,
-		n: []
-	},
-	{
-		name: "Yudoff",
-		address: "",
-		lat:44.97237334024413,
-		lng:-93.23601007461548,
-		n: []
-	},
-	{
-		name: "McDonald",
-		address: "",
-		lat:44.98011471,
-		lng:-93.2345295,
-		n: []
-	}
-];
 
-var riders = [
-	{
-		name: "Van",
-		max: 15,
-		lat: 44.96804683,
-		lng: -93.22277069,
-		taking: []
-	},
-	{
-		name: "Yosub",
-		max: 4,
-		lat: 44.97328414,
-		lng: -93.24716806,
-		taking: []
 
-	}
-];
+// var riders = [
+// 	{
+// 		name: "Van",
+// 		max: 15,
+// 		lat: 44.96804683,
+// 		lng: -93.22277069,
+// 		taking: []
+// 	},
+// 	{
+// 		name: "Yosub",
+// 		max: 4,
+// 		lat: 44.97328414,
+// 		lng: -93.24716806,
+// 		taking: []
+
+// 	}
+// ];
 
 function calc(fixed, users, riders){
 
@@ -60,7 +31,7 @@ function calc(fixed, users, riders){
 	for (var r = 0;r<riders.length;r++){
 		riderMax=riderMax+riders[r].max;
 	}
-	console.log(riderMax);
+	//console.log(riderMax);
 	if (riderMax<total){
 		return "Too many people but cannot fulfill task";
 	}
@@ -190,11 +161,44 @@ function deg2rad(deg) {
 var users;
 router.post('/',function(req, res, next) {
 	var k = req.body._id;
+	var fixed = [
+	{
+		name: "University Commons",
+		address: "",
+		lat: 44.96976229,
+		lng: -93.22253466,
+		n: []
+	},
+	{
+		name: "Wahu",
+		address: "",
+		lat:44.97287808,
+		lng:-93.22317839,
+		n: []
+	},
+	{
+		name: "Yudoff",
+		address: "",
+		lat:44.97237334024413,
+		lng:-93.23601007461548,
+		n: []
+	},
+	{
+		name: "McDonald",
+		address: "",
+		lat:44.98011471,
+		lng:-93.2345295,
+		n: []
+	}
+];
 	Schedule.find({_id:k},function(err,data){
 		if (err) return next(err);
 		var item = data[0];
 		var users = data[0]["join"];
 		var val = calc(fixed,users,item["rider"]);
+		console.log("user length: "+users.length);
+		console.log("rider length: "+item["rider"].length);
+		console.log(val);
 		if (data.length>0){
 			var d = new Date();
 			Schedule.update({_id: k},{ride: JSON.stringify(val),complete:true,timeComplete:d},function(err,data){

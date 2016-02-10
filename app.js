@@ -93,7 +93,7 @@ app.post('/login',function(req,res){
       res.cookie("admin",false,{maxAge:900000});
     }
     else {
-      console.log(users[0]["admin"]);
+      //console.log(users[0]["admin"]);
       if (users[0]["admin"]){
         res.cookie("admin",true,{maxAge:900000})
       }
@@ -124,6 +124,10 @@ app.post('/logout',function(req,res){
   res.send("cookie deleted");
 });
 
+app.post('/removeCookie',function(req,res){
+  res.clearCookie('isNew');
+  res.send("isNew deleted");
+});
 
 
 // catch 404 and forward to error handler

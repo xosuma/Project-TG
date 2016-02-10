@@ -19,7 +19,8 @@ $('#addRideModal').on('show.bs.modal', function(e) {
     <p>View latest date assigned ride: <a href="/#/ride/{{latestSchedule._id}}">{{latestDate}}</a></p>
       <ul class="listOfSchedule">
         <li class="listSchedule" ng-repeat="schedule in schedules" ng-init="parentIndex = $index">
-          <h3 ng-show="!editing[$index]" >{{schedule.month}}/{{schedule.day}}/{{schedule.year}} {{schedule.name}}</h3>
+          <h3 ng-show="!editing[$index]">{{schedule.name}}</h3>
+          <h4 ng-show="!editing[$index]" >{{schedule.month}}/{{schedule.day}}/{{schedule.year}}</h4>
           <p ng-show="!editing[$index]">Note: {{schedule.note}} 
             <button ng-show="!editing[$index]" ng-hide="schedule.complete||!adminLoggedIn()" ng-click="edit($index)">edit</button>
             <button ng-show="!editing[$index]" ng-hide="!adminLoggedIn()" ng-click="remove($index)">remove</button>
