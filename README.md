@@ -2,7 +2,7 @@
 
 ##Overview
 A web application that assigns ride using modified-BFS algorithm to find the best approximate result based on each user's location. <br/>
-Demo video: coming soon
+Demo video: [Uploaded on Youtube](https://www.youtube.com/watch?v=c-7QDZQoLhc)
 
 <b>The app offers following: </b>
 
