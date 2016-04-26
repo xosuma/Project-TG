@@ -20,5 +20,5 @@ Demo video: [Uploaded on Youtube](https://www.youtube.com/watch?v=c-7QDZQoLhc)
 
 ##Team
 - [Taeyoung Lee](https://github.com/xosuma) - Full-Stack Developer
-- [Jaeyeop Jung](https://github.com/kikicool) - Full-Stack Developer
+- [Jaeyeop Jeong](https://github.com/kikicool) - Full-Stack Developer
 - [Moohyun Lee](https://github.com/eliot36)
