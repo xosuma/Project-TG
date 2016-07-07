@@ -2,7 +2,7 @@
 
 ##Overview
 The Church Ride Organizer provides the services that organizing the riding schedule between people who need to ride to the church and volunteers who provides the riding. This application based on the web using AngularJS, Node.js and MongoDB based on modified-BFS algorithm to find the best approximate result depend on each user's location. <br/>
-<u>Demo video: [Youtube link](https://www.youtube.com/watch?v=c-7QDZQoLhc) {:target="_blank"}</u>
+_Demo video: [Youtube link](https://www.youtube.com/watch?v=c-7QDZQoLhc) {:target="_blank"}_
 
 ###The app offers following:
 
@@ -11,7 +11,7 @@ The Church Ride Organizer provides the services that organizing the riding sched
 3. Quick and fast as it is based on client-side MVC using AngularJS
 
 ##Installation
-  In advance, have installed node v.5.1.0. (Check using node -v) and latest MongoDB<br/><br/>
+  In advance, have installed node v.5.1.0. (Check using node -v) and latest MongoDB
 
   ###To build and run project:
   1. Clone the directory which contains application from Github and navigate to the directory.
