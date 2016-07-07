@@ -12,17 +12,17 @@ _Demo video: <a href="https://www.youtube.com/watch?v=c-7QDZQoLhc" target="_blan
 3. Quick and fast as it is based on client-side MVC using AngularJS
 
 ##Installation
-  In advance, have installed node v.5.1.0. (Check using node -v) and latest MongoDB
+  In advance, have installed node v.5.1.0. and latest MongoDB
 
-  _To build and run project:_
+  **_To build and run project:_**
   1. Clone the directory which contains application from Github and navigate to the directory.
   2. Open the terminal and type 'npm start' to start the communication.
   3. After the communication has connected, open the web browser and access to 'localhost:3000'<br/><br/>
-  *For more info:*<br/>
-  - <a href="http://expressjs.com/starter/generator.html" target="_blank">Express application generator</a><br/>
+  **For more info:**<br/>
+  <a href="http://expressjs.com/starter/generator.html" target="_blank">Express application generator</a><br/>
 
 
 ##Team
 - [Taeyoung Lee](https://github.com/xosuma) - Full-Stack Developer
 - [Jaeyeop Jeong](https://github.com/kikicool) - Full-Stack Developer
-- [Moohyun Lee](https://github.com/eliot36) - Front-end and UI/UX Developer
+- [Moohyun Eliot Lee](https://github.com/eliot36) - Front-end and UI/UX Developer
