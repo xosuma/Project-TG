@@ -25,4 +25,4 @@ _Demo video: <a href="https://www.youtube.com/watch?v=c-7QDZQoLhc" target="_blan
 ##Team
 - [Taeyoung Lee](https://github.com/xosuma) - Full-Stack Developer
 - [Jaeyeop Jeong](https://github.com/kikicool) - Full-Stack Developer
-- [Moohyun Eliot Lee](https://github.com/eliot36) - Front-end and UI/UX Developer
+- [Moohyun Eliot Lee](https://github.com/eliot36) - Front-End Developer and UI/UX Designer
